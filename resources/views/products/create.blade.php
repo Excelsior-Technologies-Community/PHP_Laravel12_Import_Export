@@ -78,7 +78,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         
-                        <div id="imagePreview" class="mt-2"></div>
+                        <div id="imagePreview" class="mt-2 row g-2"></div>
                     </div>
                 </div>
             </div>
@@ -94,21 +94,64 @@
 
 @section('scripts')
 <script>
-    // Image preview
+    // Simple image preview with remove button
     document.getElementById('images').addEventListener('change', function(e) {
         const preview = document.getElementById('imagePreview');
-        preview.innerHTML = '';
         
-        Array.from(e.target.files).forEach(file => {
+        Array.from(e.target.files).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
+                const colDiv = document.createElement('div');
+                colDiv.className = 'col-md-3 col-sm-4 col-6 mb-3';
+                colDiv.id = `preview-${index}`;
+                
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'position-relative';
+                
                 const img = document.createElement('img');
                 img.src = e.target.result;
-                img.className = 'image-preview';
-                preview.appendChild(img);
-            }
+                img.className = 'img-thumbnail w-100';
+                img.style.height = '120px';
+                img.style.objectFit = 'cover';
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'btn btn-danger btn-sm position-absolute';
+                removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+                removeBtn.style.top = '5px';
+                removeBtn.style.right = '5px';
+                removeBtn.style.width = '25px';
+                removeBtn.style.height = '25px';
+                removeBtn.style.padding = '0';
+                removeBtn.style.fontSize = '12px';
+                
+                removeBtn.onclick = function() {
+                    colDiv.remove();
+                    removeFileFromInput(index);
+                };
+                
+                previewDiv.appendChild(img);
+                previewDiv.appendChild(removeBtn);
+                colDiv.appendChild(previewDiv);
+                preview.appendChild(colDiv);
+            };
             reader.readAsDataURL(file);
         });
     });
+
+    // Function to remove file from input
+    function removeFileFromInput(index) {
+        const input = document.getElementById('images');
+        const dt = new DataTransfer();
+        const files = input.files;
+        
+        for (let i = 0; i < files.length; i++) {
+            if (i !== index) {
+                dt.items.add(files[i]);
+            }
+        }
+        
+        input.files = dt.files;
+    }
 </script>
 @endsection

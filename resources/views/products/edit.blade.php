@@ -85,24 +85,49 @@
                 </div>
 
                 <!-- Existing Images -->
-                @if($product->images->count() > 0)
-                    <div class="mb-4">
-                        <label class="form-label">Existing Images</label>
-                        <div class="row">
-                            @foreach($product->images as $image)
-                                <div class="col-md-2 mb-3 image-container">
-                                    <input type="checkbox" class="image-checkbox" name="deleted_images[]" value="{{ $image->id }}"
-                                        id="image-{{ $image->id }}">
-                                    <label for="image-{{ $image->id }}" class="d-block">
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Product Image"
-                                            class="img-thumbnail w-100" style="height: 100px; object-fit: cover;">
-                                        <small class="text-muted d-block text-center">Click to delete</small>
-                                    </label>
-                                </div>
-                            @endforeach
+<!-- In the existing images section -->
+@if($product->images->count() > 0)
+    <div class="mb-4">
+        <label class="form-label">Existing Images</label>
+        <div class="row">
+            @foreach($product->images as $image)
+                <div class="col-md-2 mb-3">
+                    <div class="image-container position-relative">
+                        <!-- Custom checkbox with better styling -->
+                        <div class="form-check position-absolute top-0 start-0 m-2">
+                            <input type="checkbox" 
+                                   class="form-check-input image-checkbox" 
+                                   name="deleted_images[]" 
+                                   value="{{ $image->id }}"
+                                   id="image-{{ $image->id }}">
+                            <label class="form-check-label" for="image-{{ $image->id }}"></label>
+                        </div>
+                        
+                        <!-- Remove button overlay -->
+                        <button type="button" 
+                                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-image-btn"
+                                data-image-id="{{ $image->id }}"
+                                style="width: 30px; height: 30px; border-radius: 50%; padding: 0; font-size: 18px; line-height: 1;">
+                            &times;
+                        </button>
+                        
+                        <img src="{{ asset('storage/' . $image->image_path) }}" 
+                             alt="Product Image"
+                             class="img-thumbnail w-100" 
+                             style="height: 150px; object-fit: cover;">
+                        
+                        <div class="text-center mt-1">
+                            <small class="text-muted">Image {{ $loop->iteration }}</small>
                         </div>
                     </div>
-                @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endif
+
+<!-- In scripts -->
+
 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
@@ -114,34 +139,54 @@
 @endsection
 
 @section('scripts')
-    <script>
-        // Image preview for new images
-        document.getElementById('images').addEventListener('change', function (e) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = '';
-
-            Array.from(e.target.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'image-preview';
-                    preview.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            });
+<script>
+    // Toggle checkbox when remove button is clicked
+    document.querySelectorAll('.remove-image-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const imageId = this.dataset.imageId;
+            const checkbox = document.getElementById(`image-${imageId}`);
+            const imageContainer = this.closest('.image-container');
+            
+            // Toggle checkbox
+            checkbox.checked = !checkbox.checked;
+            
+            // Visual feedback
+            if (checkbox.checked) {
+                imageContainer.style.opacity = '0.5';
+                imageContainer.style.transform = 'scale(0.95)';
+                this.innerHTML = '↺'; // Change to undo icon
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-warning');
+            } else {
+                imageContainer.style.opacity = '1';
+                imageContainer.style.transform = 'scale(1)';
+                this.innerHTML = '&times;'; // Back to X
+                this.classList.remove('btn-warning');
+                this.classList.add('btn-danger');
+            }
         });
+    });
 
-        // Toggle image selection
-        document.querySelectorAll('.image-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                const label = this.closest('label');
-                if (this.checked) {
-                    label.classList.add('opacity-50');
-                } else {
-                    label.classList.remove('opacity-50');
-                }
-            });
+    // Checkbox change event
+    document.querySelectorAll('.image-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const imageContainer = this.closest('.image-container');
+            const removeBtn = imageContainer.querySelector('.remove-image-btn');
+            
+            if (this.checked) {
+                imageContainer.style.opacity = '0.5';
+                imageContainer.style.transform = 'scale(0.95)';
+                removeBtn.innerHTML = '↺';
+                removeBtn.classList.remove('btn-danger');
+                removeBtn.classList.add('btn-warning');
+            } else {
+                imageContainer.style.opacity = '1';
+                imageContainer.style.transform = 'scale(1)';
+                removeBtn.innerHTML = '&times;';
+                removeBtn.classList.remove('btn-warning');
+                removeBtn.classList.add('btn-danger');
+            }
         });
-    </script>
+    });
+</script>
 @endsection
