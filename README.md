@@ -1,19 +1,19 @@
-# 📦 PHP_Laravel12_Import_Export
+# PHP_Laravel12_Import_Export
 
 A professional **Laravel 12 Product CRUD System** with **Excel/CSV Import & Export**, multiple image upload, soft deletes, and a clean **Bootstrap 5** interface.
 
 ---
 
-## 🚀 Features
+## Features
 
-✅ Full CRUD Operations (Create, Read, Update, Delete)  
-✅ Soft Deletes with Trash & Restore functionality  
-✅ Multiple Image Upload per product  
-✅ Image Preview & Delete support  
-✅ Excel / CSV Import & Export using `maatwebsite/excel`  
-✅ Form Validation  
-✅ Pagination  
-✅ Responsive UI using **Bootstrap 5**
+ Full CRUD Operations (Create, Read, Update, Delete)  
+ Soft Deletes with Trash & Restore functionality  
+ Multiple Image Upload per product  
+ Image Preview & Delete support  
+ Excel / CSV Import & Export using `maatwebsite/excel`  
+ Form Validation  
+ Pagination  
+ Responsive UI using **Bootstrap 5**
 
 ---
 
@@ -26,7 +26,7 @@ A professional **Laravel 12 Product CRUD System** with **Excel/CSV Import & Expo
 
 ---
 
-📸 Project Screenshots
+# Project Screenshots
 
 <img width="1738" height="573" alt="image" src="https://github.com/user-attachments/assets/73944146-19d2-40e5-9bc9-81a0482ba842" />
 <img width="1750" height="810" alt="image" src="https://github.com/user-attachments/assets/b79233fe-5c73-46ea-8ddb-637d2887f4cf" />
@@ -34,7 +34,7 @@ A professional **Laravel 12 Product CRUD System** with **Excel/CSV Import & Expo
 <img width="1778" height="967" alt="image" src="https://github.com/user-attachments/assets/bc5e154f-5ad4-48be-a785-b965d1fda267" />
 
 
-## 📦 Suggested Repository Names
+## Suggested Repository Names
 
 You can use any of these repo names:
 
@@ -50,7 +50,7 @@ Recommended for Import/Export focus:
 
 laravel12-import-export
 
-📥 Installation Guide
+Installation Guide
 1. Clone Repository
 git clone https://github.com/your-username/laravel12-import-export.git
 cd laravel12-import-export
@@ -91,7 +91,8 @@ Open in browser:
 
 http://127.0.0.1:8000
 
-📁 Project Structure
+Project Structure
+
 app/
  ├── Models/
  │    ├── Product.php
@@ -109,20 +110,21 @@ resources/
            ├── show.blade.php
            └── trash.blade.php
 
-📊 Excel / CSV Import & Export
-✅ Supported Import Columns
+Excel / CSV Import & Export
+
+Supported Import Columns
 
 Your Excel/CSV file must contain:
 
 name, description, price, quantity, category, sku
 
-✅ Export Functionality
+Export Functionality
 
 Export all products as .xlsx or .csv
 
 Download directly from the Product List page
 
-✅ Import Functionality
+Import Functionality
 
 Upload Excel or CSV file
 
