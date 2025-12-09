@@ -1,37 +1,48 @@
-# 🛒 Laravel 12 Product CRUD System
+📦 laravel12-import-export
 
-A professional **Laravel 12 Product Management System** with advanced features like multiple image upload, soft deletes, Excel import/export, and a clean Bootstrap 5 UI.
+A professional Laravel 12 Product CRUD System with Excel/CSV Import & Export, multiple image upload, soft deletes, and a clean Bootstrap 5 interface.
 
----
+🚀 Features
 
-## 🚀 Features
+✅ Full CRUD Operations (Create, Read, Update, Delete)
+✅ Soft Deletes with Trash & Restore functionality
+✅ Multiple Image Upload per product
+✅ Image Preview & Delete support
+✅ Excel / CSV Import & Export using maatwebsite/excel
+✅ Form Validation
+✅ Pagination
+✅ Responsive UI using Bootstrap 5
 
-✅ Full **CRUD Operations** (Create, Read, Update, Delete)  
-✅ **Soft Delete** with Trash & Restore functionality  
-✅ **Multiple Image Upload** per product  
-✅ Image **Preview, Add & Delete** support  
-✅ **Excel/CSV Import & Export** (Maatwebsite Excel)  
-✅ Form Validation  
-✅ Pagination  
-✅ Responsive UI using **Bootstrap 5**
+🛠️ Tech Stack
 
----
+Framework: Laravel 12
 
-## 🛠️ Tech Stack
+Frontend: Blade + Bootstrap 5
 
-- **Backend:** Laravel 12  
-- **Frontend:** Blade + Bootstrap 5  
-- **Database:** MySQL  
-- **Excel Support:** Maatwebsite/Laravel-Excel  
+Database: MySQL
 
----
+Excel Support: Maatwebsite / Laravel-Excel
 
-## 📦 Installation Guide
+📦 Suggested GitHub Repository Names
 
-### 1. Clone Repository
-```bash
-git clone https://github.com/your-username/product-crud.git
-cd product-crud
+You can use any of these repo names:
+
+laravel12-product-crud
+
+laravel12-crud-with-import-export
+
+laravel12-import-export-products
+
+product-management-laravel12
+
+For Import/Export focus repo:
+👉 Recommended:
+laravel12-import-export
+
+📥 Installation Guide
+1. Clone Repository
+git clone https://github.com/your-username/laravel12-import-export.git
+cd laravel12-import-export
 
 2. Install Dependencies
 composer install
@@ -40,36 +51,36 @@ npm run build
 
 3. Setup Environment
 
-Copy .env.example to .env and configure:
+Copy .env.example to .env and update:
 
 DB_DATABASE=product_crud
 DB_USERNAME=root
 DB_PASSWORD=
 
 
-Generate app key:
+Generate App Key:
 
 php artisan key:generate
 
 4. Run Migrations
 php artisan migrate
 
-5. Setup Storage Link
+5. Create Storage Link
 php artisan storage:link
 
 6. Install Excel Package
 composer require maatwebsite/excel
 php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
 
-7. Run the Project
+7. Run Project
 php artisan serve
 
 
-Open in browser:
+Visit in browser:
 
 http://127.0.0.1:8000
 
-📂 Project Structure
+📁 Project Structure
 app/
  ├── Models/
  │    ├── Product.php
@@ -87,11 +98,26 @@ resources/
            ├── show.blade.php
            └── trash.blade.php
 
-📊 Import / Export Format
+📊 Excel / CSV Import & Export
+✅ Supported Import Columns
 
-Columns for Excel/CSV:
+Your Excel/CSV file must contain:
 
-name, description, price, quantity, category, sku, images
+name, description, price, quantity, category, sku
+
+✅ Export Functionality
+
+Export all products as .xlsx or .csv
+
+Download from the product list page
+
+✅ Import Functionality
+
+Upload Excel or CSV file
+
+Validates data before inserting
+
+Supports bulk insert
 
 📸 Project Screenshots
 
