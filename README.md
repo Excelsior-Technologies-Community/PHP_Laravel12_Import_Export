@@ -1,4 +1,4 @@
-# 📦 laravel12-product-crud-with-import-export
+# 📦 laravel12 import-export
 
 A professional **Laravel 12 Product CRUD System** with **Excel/CSV Import & Export**, multiple image upload, soft deletes, and a clean **Bootstrap 5** interface.
 
