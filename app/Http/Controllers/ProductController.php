@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Exports\ProductsExport;
 use App\Imports\ProductsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\ImportHistory;
+use App\Models\ExportHistory;
 
 class ProductController extends Controller
 {
@@ -165,44 +167,71 @@ class ProductController extends Controller
 
     public function export()
     {
-        return Excel::download(new ProductsExport, 'products_' . date('Y-m-d_H-i-s') . '.xlsx');
+        $file = 'products_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+
+        ExportHistory::create([
+            'file_name' => $file,
+            'format' => 'Excel',
+            'total_rows' => Product::count()
+        ]);
+
+
+        return Excel::download(
+            new ProductsExport,
+            $file
+        );
     }
 
     public function import(Request $request)
     {
+
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
+
+        $file = $request->file('file');
+
+
         try {
-            $import = new ProductsImport;
-            Excel::import($import, $request->file('file'));
 
-            $message = 'Products imported successfully.';
+            $import = new ProductsImport();
 
-            // Check if we have import statistics
-            if (session()->has('import_stats')) {
-                $stats = session('import_stats');
-                $message .= " Imported: {$stats['imported']}, Skipped: {$stats['skipped']}, Total: {$stats['total']}";
-            }
 
-            return redirect()->route('products.index')->with('success', $message);
+            Excel::import(
+                $import,
+                $file
+            );
 
-        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            $failures = $e->failures();
 
-            $errorMessages = [];
-            foreach ($failures as $failure) {
-                $errorMessages[] = "Row {$failure->row()}: {$failure->errors()[0]}";
-            }
+            ImportHistory::create([
 
-            return redirect()->back()
-                ->with('error', 'Validation errors occurred:')
-                ->with('errors', $errorMessages);
+                'file_name' => $file->getClientOriginalName(),
 
+                'total_rows' => $import->totalRows,
+
+                'success_rows' => $import->successRows,
+
+                'failed_rows' => $import->failedRows
+
+            ]);
+
+
+            return redirect()
+                ->route('products.index')
+                ->with(
+                    'success',
+                    "Import completed. Total: {$import->totalRows}, Success: {$import->successRows}, Failed: {$import->failedRows}"
+                );
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Error importing file: ' . $e->getMessage());
+
+
+            return back()
+                ->with(
+                    'error',
+                    $e->getMessage()
+                );
         }
     }
 
@@ -228,10 +257,53 @@ class ProductController extends Controller
 
     public function exportCsv()
     {
+
+        $file = 'products_' . date('Y-m-d_H-i-s') . '.csv';
+
+        ExportHistory::create([
+
+            'file_name' => $file,
+
+            'format' => 'CSV',
+
+            'total_rows' => Product::count()
+
+        ]);
+
         return Excel::download(
+
             new ProductsExport,
-            'products.csv',
+
+            $file,
+
             \Maatwebsite\Excel\Excel::CSV
+
+        );
+    }
+
+    public function importHistory()
+    {
+
+        $histories = ImportHistory::latest()
+            ->paginate(10);
+
+
+        return view(
+            'products.import-history',
+            compact('histories')
+        );
+    }
+
+    public function exportHistory()
+    {
+
+        $histories = ExportHistory::latest()
+            ->paginate(10);
+
+
+        return view(
+            'products.export-history',
+            compact('histories')
         );
     }
 }

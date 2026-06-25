@@ -20,13 +20,12 @@ class Product extends Model
         'sku'
     ];
 
-    protected function price(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => number_format($value, 2),
-            set: fn ($value) => str_replace(',', '', $value)
-        );
-    }
+protected function price(): Attribute
+{
+    return Attribute::make(
+        set: fn ($value) => str_replace(',', '', $value)
+    );
+}
 
     public function images(): HasMany
     {

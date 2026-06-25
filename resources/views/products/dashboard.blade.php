@@ -68,7 +68,7 @@
             <div class="card-body text-center">
 
                 <div class="display-5 text-warning mb-2">
-                    <i class="bi bi-currency-dollar"></i>
+                    <i class="bi bi-currency-rupee"></i>
                 </div>
 
                 <h2 class="fw-bold">

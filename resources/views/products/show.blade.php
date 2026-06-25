@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th>Price</th>
-                        <td>${{ $product->price }}</td>
+                        <td>₹{{ number_format($product->price,2) }}</td>
                     </tr>
                     <tr>
                         <th>Quantity</th>

@@ -31,6 +31,14 @@ Route::prefix('products')->group(function () {
     Route::post('/import/excel', [ProductController::class, 'import'])
         ->name('products.import');
 
+        // Import Export History
+    Route::get('/import-history', [ProductController::class,'importHistory'])
+        ->name('products.import.history');
+
+
+    Route::get('/export-history', [ProductController::class,'exportHistory'])
+        ->name('products.export.history');    
+
     Route::get('/{product}', [ProductController::class, 'show'])
         ->name('products.show');
 

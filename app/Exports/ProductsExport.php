@@ -35,7 +35,7 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping
             $product->id,
             $product->name,
             $product->description ?? '',
-            $product->price,
+            number_format($product->price,2),
             $product->quantity,
             $product->category,
             $product->sku,
