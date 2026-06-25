@@ -12,10 +12,33 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('images')->latest()->paginate(10);
-        return view('products.index', compact('products'));
+        $query = Product::with('images');
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('sku', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        $products = $query->oldest()
+            ->paginate(4)
+            ->withQueryString();
+
+        $categories = Product::select('category')
+            ->distinct()
+            ->pluck('category');
+
+        return view('products.index', compact(
+            'products',
+            'categories'
+        ));
     }
 
     public function create()
@@ -181,5 +204,34 @@ class ProductController extends Controller
             return redirect()->back()
                 ->with('error', 'Error importing file: ' . $e->getMessage());
         }
+    }
+
+    public function dashboard()
+    {
+        $totalProducts = Product::count();
+
+        $totalQuantity = Product::sum('quantity');
+
+        $totalInventoryValue = Product::sum(
+            \DB::raw('price * quantity')
+        );
+
+        $totalCategories = Product::distinct('category')->count();
+
+        return view('products.dashboard', compact(
+            'totalProducts',
+            'totalQuantity',
+            'totalInventoryValue',
+            'totalCategories'
+        ));
+    }
+
+    public function exportCsv()
+    {
+        return Excel::download(
+            new ProductsExport,
+            'products.csv',
+            \Maatwebsite\Excel\Excel::CSV
+        );
     }
 }
