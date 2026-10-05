@@ -88,12 +88,11 @@
 <!-- In the existing images section -->
 @if($product->images->count() > 0)
     <div class="mb-4">
-        <label class="form-label">Existing Images</label>
+        <label class="form-label font-bold text-secondary">Existing Product Images Gallery & Cover Selector</label>
         <div class="row">
             @foreach($product->images as $image)
-                <div class="col-md-2 mb-3">
-                    <div class="image-container position-relative">
-                        <!-- Custom checkbox with better styling -->
+                <div class="col-md-3 mb-3">
+                    <div class="image-container position-relative border rounded p-2 bg-light {{ $image->is_primary ? 'border-warning border-3' : '' }}">
                         <div class="form-check position-absolute top-0 start-0 m-2">
                             <input type="checkbox" 
                                    class="form-check-input image-checkbox" 
@@ -103,7 +102,6 @@
                             <label class="form-check-label" for="image-{{ $image->id }}"></label>
                         </div>
                         
-                        <!-- Remove button overlay -->
                         <button type="button" 
                                 class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-image-btn"
                                 data-image-id="{{ $image->id }}"
@@ -115,9 +113,24 @@
                              alt="Product Image"
                              class="img-thumbnail w-100" 
                              style="height: 150px; object-fit: cover;">
-                        
-                        <div class="text-center mt-1">
-                            <small class="text-muted">Image {{ $loop->iteration }}</small>
+
+                        @if($image->is_primary)
+                            <span class="badge bg-warning text-dark position-absolute bottom-0 start-0 m-2 font-bold shadow-sm">
+                                ⭐ Main Cover Image
+                            </span>
+                        @endif
+
+                        <div class="text-center mt-2">
+                            @if(!$image->is_primary)
+                                <form action="{{ route('products.images.set_primary', $image->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-warning text-dark fw-bold w-100 py-1">
+                                        ⭐ Set as Cover Image
+                                    </button>
+                                </form>
+                            @else
+                                <span class="small text-success fw-bold">Active Main Cover</span>
+                            @endif
                         </div>
                     </div>
                 </div>

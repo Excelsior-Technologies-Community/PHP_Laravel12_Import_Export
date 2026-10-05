@@ -7,69 +7,45 @@
 <div class="card">
 
 
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5>Products List</h5>
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h5 class="mb-0">Products List</h5>
 
-        <div>
+        <div class="d-flex flex-wrap gap-2">
 
             <a href="{{ route('products.create') }}"
                 class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> Add Product
             </a>
 
-
-            <button type="button"
-                class="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#importModal">
-
-                <i class="bi bi-upload"></i> Import
-
-            </button>
-
-
-            <a href="{{ route('products.export') }}"
-                class="btn btn-warning">
-
-                <i class="bi bi-file-earmark-excel"></i>
-                Excel Export
-
+            <a href="{{ route('products.import.studio') }}"
+                class="btn btn-indigo text-white" style="background-color: #4f46e5;">
+                <i class="bi bi-sliders"></i> Import Studio & Mapper
             </a>
 
-
-            <a href="{{ route('products.export.csv') }}"
-                class="btn btn-info">
-
-                <i class="bi bi-filetype-csv"></i>
-                CSV Export
-
+            <a href="{{ route('products.zip_import.form') }}"
+                class="btn btn-warning fw-bold">
+                <i class="bi bi-file-earmark-zip-fill"></i> ZIP Image Pack
             </a>
 
+            <a href="{{ route('products.export.studio') }}"
+                class="btn btn-purple text-white" style="background-color: #9333ea;">
+                <i class="bi bi-funnel-fill"></i> Custom Export Studio
+            </a>
+
+            <a href="{{ route('products.export.pdf_catalog') }}"
+                target="_blank"
+                class="btn btn-danger">
+                <i class="bi bi-file-earmark-pdf-fill"></i> PDF Catalog
+            </a>
 
             <a href="{{ route('products.import.history') }}"
                 class="btn btn-secondary">
-
-                <i class="bi bi-clock-history"></i>
-                Import History
-
+                <i class="bi bi-clock-history"></i> History
             </a>
-
-
-            <a href="{{ route('products.export.history') }}"
-                class="btn btn-dark">
-
-                <i class="bi bi-clock"></i>
-                Export History
-
-            </a>
-
 
             <a href="{{ route('products.dashboard') }}"
-                class="btn btn-danger">
-
-                <i class="bi bi-speedometer2"></i>
-                Dashboard
-
+                class="btn btn-dark">
+                <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
         </div>
